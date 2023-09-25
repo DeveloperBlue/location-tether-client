@@ -81,9 +81,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace 'com.michaelrooplall.locationtetether'
+    namespace 'com.michaelrooplall.locationtether'
     defaultConfig {
-        applicationId 'com.michaelrooplall.locationtetether'
+        applicationId 'com.michaelrooplall.locationtether'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

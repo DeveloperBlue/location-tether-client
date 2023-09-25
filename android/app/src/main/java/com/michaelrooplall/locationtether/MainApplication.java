@@ -1,4 +1,4 @@
-package com.michaelrooplall.locationtetether;
+package com.michaelrooplall.locationtether;
 
 import android.app.Application;
 import android.content.res.Configuration;

@@ -2,26 +2,26 @@ import { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { PaperProvider, Button } from 'react-native-paper';
-import GetLocation, { Location } from 'react-native-get-location'
+import * as Location from 'expo-location';
 
 const LocationHandler = () => {
 
-	const [location, setLocation] = useState<Location | null>(null);
+	const [location, setLocation] = useState<any | null>(null);
 
 	useEffect(() => {
-		GetLocation.getCurrentPosition({
-			enableHighAccuracy: true,
-			timeout: 60000,
-		})
-		.then(location => {
-			console.log(location);
+		(async () => {
+		  
+			let { status } = await Location.requestForegroundPermissionsAsync();
+			if (status !== 'granted') {
+				console.log('Permission to access location was denied');
+				return;
+			}
+
+			let location = await Location.getCurrentPositionAsync({});
 			setLocation(location);
-		})
-		.catch(error => {
-			const { code, message } = error;
-			console.warn(code, message);
-		})
-	}, [])
+
+		})();
+	}, []);
 
 	return (
 		<View>
@@ -34,31 +34,20 @@ const LocationHandler = () => {
 			}
 			<Button
 				mode={'contained'}
-				onPress={() => {
-					console.log("Location Lib", GetLocation);
-					GetLocation.getCurrentPosition({
-						enableHighAccuracy: false,
-						timeout: 60000
-					})
-					.then(location => {
-						console.log(location);
-						setLocation(location);
-					})
-					.catch(error => {
-						const { code, message } = error;
-						console.warn(code, message);
-					})
+				onPress={async () => {
+					
+					let { status } = await Location.requestForegroundPermissionsAsync();
+					if (status !== 'granted') {
+						console.log('Permission to access location was denied');
+						return;
+					}
+
+					let location = await Location.getCurrentPositionAsync({});
+					setLocation(location);
+
 				}}
 			>
 				Update Location
-			</Button>
-			<Button
-				mode={'contained'}
-				onPress={() => {
-					GetLocation.openSettings();
-				}}
-			>
-				Open Settings
 			</Button>
 		</View>
 	)
